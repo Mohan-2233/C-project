@@ -1,11 +1,11 @@
 pipeline {
     agent any
 
-    environment {
+  environment {
         GIT_REPO = 'https://github.com/Ajayrichard/Jenkinsandjava.git'
         AWS_REGION = 'ap-south-1'
-        ECR_REPO_NAME = 'jenkinsecr'
-        ECR_PUBLIC_REPO_URI = 'public.ecr.aws/k0c8q8z5/jenkinsecr'
+        ECR_REPO_NAME = 'jenkins-awsecrrepo'
+        ECR_PUBLIC_REPO_URI = '517691465937.dkr.ecr.ap-south-1.amazonaws.com'
         IMAGE_TAG = 'latest'
         AWS_ACCOUNT_ID = '517691465937'
         IMAGE_URI = "${ECR_PUBLIC_REPO_URI}:${IMAGE_TAG}"
@@ -69,7 +69,7 @@ pipeline {
                 script {
                     sh '''
                         echo "Logging into AWS ECR..."
-                        aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+                       aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 517691465937.dkr.ecr.ap-south-1.amazonaws.com
                     '''
                 }
             }
@@ -80,7 +80,7 @@ pipeline {
                 script {
                     sh '''
                         echo "Building Docker image..."
-                        docker build -t ${IMAGE_URI} .
+                        docker build -t jenkins-awsecrrepo .
                     '''
                 }
             }
